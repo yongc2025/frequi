@@ -127,7 +127,6 @@ const navItems = ref([
     label: '统计分析',
     to: '/analysis',
     icon: 'i-mdi-chart-bar',
-    visible: computed(() => !botStore.canRunBacktest),
   },
   {
     label: 'Settings',
