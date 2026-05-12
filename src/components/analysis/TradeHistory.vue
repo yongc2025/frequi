@@ -14,7 +14,7 @@ const filters = ref<TradeQueryParams>({
   date_to: undefined,
   min_profit: undefined,
   max_profit: undefined,
-  limit: 500,
+  limit: 50,
   offset: 0,
 })
 
@@ -37,7 +37,7 @@ function doReset() {
     date_to: undefined,
     min_profit: undefined,
     max_profit: undefined,
-    limit: 500,
+    limit: 50,
     offset: 0,
   }
   dashboardStore.fetchTrades()

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import { useToast } from '@/composables/useToast'
 import type {
   DashboardTrade,
   TradeStats,
@@ -12,6 +13,10 @@ import type {
 } from '@/types/dashboard'
 
 const API_BASE = '/api/v1/dashboard'
+
+function _errDetail(err: any): string {
+  return err?.response?.data?.detail || err?.message || '未知错误'
+}
 
 export const useDashboardStore = defineStore('dashboard', {
   state: () => ({
@@ -56,8 +61,9 @@ export const useDashboardStore = defineStore('dashboard', {
         const { data } = await axios.get(`${API_BASE}/trades`, { params })
         this.trades = data.trades
         this.tradeStats = data.stats
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to fetch trades:', err)
+        useToast().add({ summary: '交易查询失败', detail: _errDetail(err), severity: 'error', life: 5000 })
       } finally {
         this.tradesLoading = false
       }
@@ -67,8 +73,9 @@ export const useDashboardStore = defineStore('dashboard', {
       try {
         const { data } = await axios.get(`${API_BASE}/trades/filters`)
         this.filters = data
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to fetch filters:', err)
+        useToast().add({ summary: '筛选项加载失败', detail: _errDetail(err), severity: 'error', life: 5000 })
       }
     },
 
@@ -78,8 +85,9 @@ export const useDashboardStore = defineStore('dashboard', {
       try {
         const { data } = await axios.get(`${API_BASE}/market-scan`)
         this.scanResult = data
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to fetch scan:', err)
+        useToast().add({ summary: '扫描数据加载失败', detail: _errDetail(err), severity: 'error', life: 5000 })
       }
     },
 
@@ -95,8 +103,9 @@ export const useDashboardStore = defineStore('dashboard', {
             this.scanLoading = false
           }
         }, 3000)
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to refresh scan:', err)
+        useToast().add({ summary: '刷新扫描失败', detail: _errDetail(err), severity: 'error', life: 5000 })
         this.scanLoading = false
       }
     },
@@ -107,8 +116,9 @@ export const useDashboardStore = defineStore('dashboard', {
       try {
         const { data } = await axios.get(`${API_BASE}/config/bot-info`)
         this.botInfo = data
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to fetch bot info:', err)
+        useToast().add({ summary: 'Bot 信息获取失败', detail: _errDetail(err), severity: 'error', life: 5000 })
       }
     },
 
@@ -120,8 +130,9 @@ export const useDashboardStore = defineStore('dashboard', {
         this.reportStatus = 'running'
         // 轮询
         this._startReportPoll()
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to run report:', err)
+        useToast().add({ summary: '报告生成失败', detail: _errDetail(err), severity: 'error', life: 5000 })
       }
     },
 
@@ -147,8 +158,9 @@ export const useDashboardStore = defineStore('dashboard', {
         this.reportStatus = data.status
         this.reportLog = data.log
         this.reportUpdatedAt = data.updated_at
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to fetch report status:', err)
+        useToast().add({ summary: '报告状态查询失败', detail: _errDetail(err), severity: 'error', life: 5000 })
       }
     },
 
@@ -157,8 +169,9 @@ export const useDashboardStore = defineStore('dashboard', {
         const { data } = await axios.get(`${API_BASE}/live-report/data`)
         this.reportData = data.data
         this.reportStatus = data.status
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to fetch report data:', err)
+        useToast().add({ summary: '报告数据加载失败', detail: _errDetail(err), severity: 'error', life: 5000 })
       }
     },
 
@@ -175,8 +188,9 @@ export const useDashboardStore = defineStore('dashboard', {
         })
         this.compareResult = data
         return data as CompareResult
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to compare backtest:', err)
+        useToast().add({ summary: '回测对比失败', detail: _errDetail(err), severity: 'error', life: 5000 })
         this.compareResult = null
         return null
       } finally {

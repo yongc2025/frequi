@@ -19,10 +19,10 @@ const tabs = [
     <TabMenu :model="tabs" v-model:activeIndex="activeTab" />
     <div>
       <KeepAlive>
-        <TradeHistory v-if="activeTab === 0" />
-        <LiveReport v-else-if="activeTab === 1" />
-        <BacktestCompare v-else-if="activeTab === 2" />
-        <MarketScan v-else-if="activeTab === 3" />
+        <TradeHistory v-if="activeTab === 0" :key="'trade-history'" />
+        <LiveReport v-else-if="activeTab === 1" :key="'live-report'" />
+        <BacktestCompare v-else-if="activeTab === 2" :key="'backtest-compare'" />
+        <MarketScan v-else-if="activeTab === 3" :key="'market-scan'" />
       </KeepAlive>
     </div>
   </div>
