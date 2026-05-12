@@ -124,6 +124,12 @@ const navItems = ref([
     icon: 'i-mdi-format-list-bulleted',
   },
   {
+    label: '统计分析',
+    to: '/analysis',
+    icon: 'i-mdi-chart-bar',
+    visible: computed(() => !botStore.canRunBacktest),
+  },
+  {
     label: 'Settings',
     to: '/settings',
     mobileOnly: true,
